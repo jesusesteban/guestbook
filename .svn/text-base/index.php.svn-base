@@ -1,0 +1,98 @@
+<?php
+
+  mysql_connect("carbono", "root", "m0chu3lo")or die("cannot connect server ");
+  mysql_select_db("tecnilogica_guestbook")or die("cannot select DB");
+
+  $ent_nombre = mysql_real_escape_string($_POST["ent_nombre"]);
+  $ent_comentarios = mysql_real_escape_string($_POST["ent_comentarios"]);
+
+  $hasContent = $ent_nombre!='' && $ent_comentarios!='';
+
+  if ($hasContent) {
+    $sql="INSERT INTO entry(ent_nombre, ent_comentarios, ent_fecha)VALUES('$ent_nombre', '$ent_comentarios', now())";
+    $result=mysql_query($sql);
+  }
+
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<html>
+
+  <head>
+
+    <title>Libro de visitas</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/bootstrap.css" rel="stylesheet" media="screen">
+
+  </head>
+
+  <body>
+
+    <div class="container">
+
+      <div class="jumbotron">
+        <h1>Libro de visitas</h1>
+        <p>Aenean a auctor libero. Integer tempus sagittis velit, sit amet eleifend lacus laoreet sit amet. Phasellus vestibulum quam id velit elementum varius. Ut ultrices ligula ante, ac ultricies massa gravida ut. Nullam semper in eros in porttitor. Donec id orci ac mi consequat dictum. Quisque ante dui, dictum ornare mauris eget, sollicitudin feugiat metus. Aliquam auctor nec quam nec eleifend. Mauris luctus egestas mi dignissim cursus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In sed enim diam. </p>
+      </div>
+
+
+      <div class="jumbotron">
+        <form role="form" method="POST" action="index.php">
+          <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" class="form-control" id="nombre" placeholder="Escribe tu nombre" name= "ent_nombre">
+          </div>
+          <div class="form-group">
+            <label for="texto">Comentarios</label>
+            <textarea class="form-control" id="texto" rows="6" name= "ent_comentarios"></textarea>
+          </div>
+          <button type="submit" class="btn btn-lg btn-primary">Enviar</button>
+        </form>
+      </div>
+
+
+      <div class="modal fade" id="modalsuccess">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title">Integer tempus sagittis velit, sit amet eleifend lacus laoreet sit amet</h4>
+            </div>
+            <div class="modal-body">
+              <p>Quisque ante dui, dictum ornare mauris eget, sollicitudin feugiat metus. Aliquam auctor nec quam nec eleifend. Mauris luctus egestas mi dignissim cursus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In sed enim diam. </p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div> 
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+    <?php if ($hasContent) { ?>
+
+    <script type="text/javascript">
+      var intervalo;
+      $('#modalsuccess').modal('show');
+      intervalo = setInterval(ocultarModal,5000);
+      function ocultarModal() {
+        clearInterval(intervalo);
+        $('#modalsuccess').modal('hide');
+      }
+    </script>
+    
+    <?php } ?>
+
+  </body>
+</html>
+
+
+
+
